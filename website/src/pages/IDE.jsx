@@ -7,51 +7,50 @@ export default function IDE() {
   const [current, setCurrent] = useState("index.html");
 
   const [files, setFiles] = useState({
-    "index.html": `<h1>Sandbox CodeX</h1>
-<p>Hello World</p>`,
-
-    "style.css": `body{
-margin:0;
-background:#0f172a;
-color:white;
-font-family:Arial;
-display:flex;
-justify-content:center;
-align-items:center;
-height:100vh;
-}
-
-h1{
-color:#7c5cff;
-}`,
-
-    "script.js": `console.log("Sandbox CodeX");`,
+    "index.html": "<h1>Hello Sandbox CodeX</h1>",
+    "style.css": "body{background:#111;color:#fff;font-family:Arial}",
+    "script.js": "console.log('Hello');",
   });
+
+  const createFile = () => {
+    const name = prompt("File name");
+    if (!name || files[name]) return;
+
+    setFiles({
+      ...files,
+      [name]: "",
+    });
+
+    setCurrent(name);
+  };
 
   const preview = `
 <!DOCTYPE html>
 <html>
 <head>
-<style>${files["style.css"]}</style>
+<style>${files["style.css"] || ""}</style>
 </head>
 <body>
-${files["index.html"]}
+${files["index.html"] || ""}
 <script>
-${files["script.js"]}
+${files["script.js"] || ""}
 </script>
 </body>
 </html>`;
 
   return (
-    <div
-      style={{
-        display: "grid",
-        gridTemplateColumns: "220px 1fr 1fr",
-        gridTemplateRows: "1fr 220px",
-        height: "100vh",
-      }}
-    >
-      <Sidebar current={current} setCurrent={setCurrent} />
+    <div style={{
+      display:"grid",
+      gridTemplateColumns:"220px 1fr 1fr",
+      gridTemplateRows:"1fr 220px",
+      height:"100vh"
+    }}>
+      <Sidebar
+        files={files}
+        current={current}
+        setCurrent={setCurrent}
+        createFile={createFile}
+      />
 
       <Editor
         language={
@@ -62,26 +61,17 @@ ${files["script.js"]}
             : "html"
         }
         code={files[current]}
-        setCode={(value) =>
-          setFiles({
-            ...files,
-            [current]: value,
-          })
-        }
+        setCode={(value)=>setFiles({...files,[current]:value})}
       />
 
       <iframe
         title="preview"
         srcDoc={preview}
-        style={{
-          width: "100%",
-          height: "100%",
-          border: "none",
-        }}
+        style={{border:"none",width:"100%",height:"100%"}}
       />
 
-      <div style={{ gridColumn: "2 / 4" }}>
-        <Terminal />
+      <div style={{gridColumn:"2 / 4"}}>
+        <Terminal/>
       </div>
     </div>
   );

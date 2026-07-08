@@ -1,35 +1,55 @@
-const files = [
-  { name: "index.html", type: "html" },
-  { name: "style.css", type: "css" },
-  { name: "script.js", type: "js" },
-];
-
-export default function Sidebar({ current, setCurrent }) {
+export default function Sidebar({
+  files,
+  current,
+  setCurrent,
+  createFile,
+}) {
   return (
     <aside
       style={{
-        width: "220px",
-        background: "#111827",
-        color: "#fff",
-        borderRight: "1px solid #222",
-        padding: "10px",
+        width:220,
+        background:"#111827",
+        color:"#fff",
+        padding:10,
+        borderRight:"1px solid #222"
       }}
     >
-      <h3 style={{ marginBottom: 10 }}>EXPLORER</h3>
+      <div
+        style={{
+          display:"flex",
+          justifyContent:"space-between",
+          alignItems:"center",
+          marginBottom:10
+        }}
+      >
+        <b>EXPLORER</b>
 
-      {files.map((file) => (
-        <div
-          key={file.name}
-          onClick={() => setCurrent(file.name)}
+        <button
+          onClick={createFile}
           style={{
-            padding: "8px",
-            cursor: "pointer",
-            borderRadius: "6px",
-            background:
-              current === file.name ? "#374151" : "transparent",
+            cursor:"pointer",
+            padding:"4px 8px"
           }}
         >
-          📄 {file.name}
+          +
+        </button>
+      </div>
+
+      {Object.keys(files).map((name)=>(
+        <div
+          key={name}
+          onClick={()=>setCurrent(name)}
+          style={{
+            padding:"8px",
+            cursor:"pointer",
+            borderRadius:6,
+            background:
+              current===name
+                ? "#374151"
+                : "transparent"
+          }}
+        >
+          📄 {name}
         </div>
       ))}
     </aside>
