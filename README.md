@@ -102,3 +102,26 @@ Giai đoạn 6: Cloud
 📂 Clone repository
 🚀 Deploy lên Vercel
 ☁️ Đồng bộ dự án
+
+Giai đoạn tiếp theo
+Xây dựng Sandbox CodeX thành một IDE trên trình duyệt theo các mốc sau:
+Phase 1
+📁 File Explorer
+📝 Monaco Editor
+💻 Xterm Terminal
+📂 Tab Editor
+🌙 Dark Theme
+Phase 2
+🤖 AI Chat Sidebar
+📄 Quản lý project
+💾 Lưu workspace
+Phase 3
+🐳 Docker Sandbox
+▶️ Run/Stop project
+🌐 Live Preview
+📦 Git Integration
+Phase 4
+🔌 Plugin Marketplace
+👥 Collaboration
+☁️ Cloud Workspace
+🚀 Deploy một chạm lên Vercel
