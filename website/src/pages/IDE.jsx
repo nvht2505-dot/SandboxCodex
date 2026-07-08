@@ -4,31 +4,43 @@ import Editor from "../components/Editor";
 import Terminal from "../components/Terminal";
 
 export default function IDE() {
-  const [code, setCode] = useState(`<!DOCTYPE html>
-<html>
-<head>
-<style>
-body{
+  const [current, setCurrent] = useState("index.html");
+
+  const [files, setFiles] = useState({
+    "index.html": `<h1>Sandbox CodeX</h1>
+<p>Hello World</p>`,
+
+    "style.css": `body{
+margin:0;
 background:#0f172a;
+color:white;
+font-family:Arial;
 display:flex;
 justify-content:center;
 align-items:center;
 height:100vh;
-font-family:Arial;
-color:white;
 }
+
 h1{
 color:#7c5cff;
-}
-</style>
+}`,
+
+    "script.js": `console.log("Sandbox CodeX");`,
+  });
+
+  const preview = `
+<!DOCTYPE html>
+<html>
+<head>
+<style>${files["style.css"]}</style>
 </head>
 <body>
-<div>
-<h1>Sandbox CodeX</h1>
-<p>Edit code and preview instantly.</p>
-</div>
+${files["index.html"]}
+<script>
+${files["script.js"]}
+</script>
 </body>
-</html>`);
+</html>`;
 
   return (
     <div
@@ -39,18 +51,32 @@ color:#7c5cff;
         height: "100vh",
       }}
     >
-      <Sidebar />
+      <Sidebar current={current} setCurrent={setCurrent} />
 
-      <Editor code={code} setCode={setCode} />
+      <Editor
+        language={
+          current.endsWith(".css")
+            ? "css"
+            : current.endsWith(".js")
+            ? "javascript"
+            : "html"
+        }
+        code={files[current]}
+        setCode={(value) =>
+          setFiles({
+            ...files,
+            [current]: value,
+          })
+        }
+      />
 
       <iframe
         title="preview"
-        srcDoc={code}
+        srcDoc={preview}
         style={{
-          border: "none",
           width: "100%",
           height: "100%",
-          background: "#fff",
+          border: "none",
         }}
       />
 
