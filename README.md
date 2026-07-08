@@ -125,3 +125,92 @@ Phase 4
 👥 Collaboration
 ☁️ Cloud Workspace
 🚀 Deploy một chạm lên Vercel
+
+Tiếp theo nên xây dựng giao diện IDE trước, sau đó mới thêm AI và Docker. Cấu trúc sẽ như sau:
+
+Sandbox CodeX
+├── TopBar
+│   ├── Logo
+│   ├── Project
+│   ├── Run
+│   ├── Stop
+│   └── Deploy
+├── Sidebar
+│   ├── Explorer
+│   ├── Search
+│   ├── Source Control
+│   ├── Extensions
+│   └── Settings
+├── Editor
+│   ├── Monaco Editor
+│   ├── Tabs
+│   └── Breadcrumb
+├── AI Panel
+│   ├── Chat
+│   ├── Prompt
+│   └── History
+├── Terminal
+│   └── Xterm
+└── Preview
+    └── Live Browser
+
+Cấu trúc thư mục React
+
+src/
+ ├── components/
+ │   ├── TopBar.jsx
+ │   ├── Sidebar.jsx
+ │   ├── Explorer.jsx
+ │   ├── Editor.jsx
+ │   ├── Terminal.jsx
+ │   ├── Preview.jsx
+ │   └── AIChat.jsx
+ ├── pages/
+ │   └── IDE.jsx
+ ├── App.jsx
+ ├── App.css
+ └── main.jsx
+
+Giai đoạn đầu
+
+✅ Sidebar giống VS Code
+
+✅ Monaco Editor ở giữa
+
+✅ Xterm Terminal phía dưới
+
+✅ AI Chat bên phải
+
+✅ Responsive cho điện thoại
+
+
+Sau khi hoàn thành, giao diện sẽ trông gần như:
+
+┌───────────────────────────────────────────────────────────────┐
+│ Sandbox CodeX              ▶ Run    ■ Stop     🚀 Deploy      │
+├──────────────┬─────────────────────────────┬──────────────────┤
+│ Explorer     │                             │                  │
+│ src          │                             │    AI Chat       │
+│ public       │     Monaco Editor           │                  │
+│ package.json │                             │                  │
+│              │                             │                  │
+├──────────────┴─────────────────────────────┴──────────────────┤
+│ Terminal                                                     │
+├───────────────────────────────────────────────────────────────┤
+│ Live Preview                                                 │
+└───────────────────────────────────────────────────────────────┘
+
+Sau bước này mới tích hợp:
+
+🤖 AI Agent
+
+🐳 Docker/WebContainer
+
+📦 Git
+
+🚀 Deploy trực tiếp lên Vercel
+
+🌐 Preview thời gian thực
+
+
+Đây sẽ là nền tảng của phiên bản Sandbox CodeX v0.2.
