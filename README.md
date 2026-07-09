@@ -15,6 +15,7 @@ Sandbox CodeX là một AI Sandbox IDE thế hệ mới giúp lập trình viên
 - Terminal
 - Git Integration
 - API Integration
+- OpenAI Sandbox AI Integration
 
 ## Hỗ trợ AI
 
@@ -39,6 +40,11 @@ Sandbox CodeX là một AI Sandbox IDE thế hệ mới giúp lập trình viên
 - Git
 - Extension System
 - Plugin Marketplace
+
+
+## Thiết kế OpenAI Sandbox AI
+
+Sandbox CodeX định hướng tích hợp OpenAI Platform để xây dựng OpenClaw, trợ lý AI chính của Eios, có khả năng tự động chuyển yêu cầu người dùng thành ứng dụng production-ready trong sandbox. Xem bản thiết kế chi tiết tại [`docs/OPENAI_SANDBOX_INTEGRATION.md`](docs/OPENAI_SANDBOX_INTEGRATION.md).
 
 ## Trạng thái
 
