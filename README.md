@@ -70,39 +70,6 @@ Repository này sẽ là nền tảng để phát triển Sandbox CodeX từ phi
 3. **Giai đoạn 3:** Thêm AI Agent và Sandbox.
 4. **Giai đoạn 4:** Hoàn thiện backend, xác thực và triển khai bản phát hành đầu tiên (v1.0.0).
 
-Được. Theo dự án Sandbox CodeX, tao đề xuất làm theo thứ tự này để sau này không phải sửa đi sửa lại:
-Giai đoạn 1: Landing Page
-✅ Trang chủ đẹp như Cursor/Bolt/Lovable
-✅ Responsive điện thoại
-✅ Dark mode
-✅ Animation
-✅ Header + Hero + Features + Footer
-Giai đoạn 2: IDE
-📁 File Explorer
-📝 Monaco Editor (VS Code)
-📄 Tabs nhiều file
-🔍 Tìm kiếm file
-Giai đoạn 3: Terminal
-💻 Xterm.js
-🐧 Terminal Linux
-📦 Chạy npm, git, python...
-🔄 Realtime
-Giai đoạn 4: AI
-🤖 Chat AI
-🧠 Hỗ trợ OpenAI, Gemini, Claude, Grok, DeepSeek...
-✍️ Sinh code
-🔧 Sửa lỗi code
-Giai đoạn 5: Sandbox
-🐳 Docker Container
-▶️ Chạy Node.js, Python, PHP...
-🌐 Live Preview
-📦 Cài package
-Giai đoạn 6: Cloud
-🔐 Đăng nhập GitHub
-📂 Clone repository
-🚀 Deploy lên Vercel
-☁️ Đồng bộ dự án
-
 
 
 # Build from Docs to a Finished Agent
