@@ -1,0 +1,17 @@
+
+
+<!-- This is an auto-generated comment: release notes by coderabbit.ai -->
+
+## Summary by CodeRabbit
+
+* **New Features**
+  * Added automated package publishing when a release is created.
+  * Added SLSA v3 provenance generation and release asset uploads.
+  * Added automated testing and builds across supported Node.js versions.
+  * Introduced a redesigned sandbox workspace interface with pipeline, file, preview, and runtime log views.
+
+* **Documentation**
+  * Added OpenAI Sandbox AI integration guidance, architecture diagrams, workflows, security controls, and implementation roadmap.
+  * Expanded guidance for building and operating autonomous agents.
+
+<!-- end of auto-generated comment: release notes by coderabbit.ai -->
