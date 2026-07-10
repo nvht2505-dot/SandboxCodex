@@ -1,0 +1,124 @@
+# Build a realtime voice support app
+
+A focused build guide for creating a realtime voice customer support experience with OpenAI voice agents, support tools, transcripts, and production-ready handoff patterns.
+
+## Intro
+
+In this guide, we’ll cover the building blocks for a realtime voice customer support app: choosing a voice-agent architecture, streaming customer audio to a low-latency model, connecting support tools, and capturing transcripts for review. We’ll end with a practical app shape that can answer routine questions, create or update support records, and escalate to a human when needed.
+
+### Resources
+- [Voice agents](https://developers.openai.com/api/docs/guides/voice-agents) - Learn how to build voice agents with the OpenAI Agents SDK, choose the right architecture, and connect voice workflows to the rest of the agent stack.
+- [Realtime intro](https://platform.openai.com/docs/guides/realtime-conversations) - Introduction to building realtime voice applications.
+
+## Choose the voice-agent architecture
+
+Start with a speech-to-speech realtime architecture for natural support calls where the customer expects interruption handling, fast replies, and spoken turn-taking. Keep the first version narrow: define the support persona, the allowed topics, escalation triggers, and the structured data you need to collect before a handoff, such as issue type, account identifier placeholder, urgency, and summary.
+
+### Guide extract
+
+#### Choose the right architecture
+
+[Read full section](https://developers.openai.com/api/docs/guides/voice-agents#choose-the-right-architecture)
+
+## Choose the right architecture
+
+| Architecture                              | Best for                                                  | Why                                                                                   |
+| ----------------------------------------- | --------------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| Speech-to-speech with live audio sessions | Natural, low-latency conversations                        | The model handles live audio input and output directly                                |
+| Chained voice pipeline                    | Predictable workflows or extending an existing text agent | Your app keeps explicit control over transcription, text reasoning, and speech output |
+
+Agent Builder doesn't currently support voice workflows, so voice stays an SDK-first surface.
+
+### Resources
+- [Realtime agents starter app](https://github.com/openai/openai-realtime-agents) - Starter app demonstrating realtime agent capabilities.
+
+## Add realtime voice to the app
+
+Create a short-lived realtime session from your server, then let the browser connect with microphone input and stream model audio back to the user. The client should show call state, support-agent status, and a transcript panel so the user can see what was understood while still interacting by voice.
+
+### Code example
+
+```javascript
+// Server endpoint: mint an ephemeral realtime session for the browser
+app.post('/session', async (_req, res) => {
+  const response = await fetch('https://api.openai.com/v1/realtime/sessions', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      model: 'gpt-realtime',
+      voice: 'alloy',
+      instructions: `You are a helpful customer support voice agent.
+Collect the issue, answer only from approved support knowledge,
+and escalate when the user asks for a human or the issue is unclear.`
+    })
+  });
+
+  res.json(await response.json());
+});
+```
+
+### Guide extract
+
+#### Build a speech-to-speech voice agent
+
+[Read full section](https://developers.openai.com/api/docs/guides/voice-agents#build-a-speech-to-speech-voice-agent)
+
+## Build a speech-to-speech voice agent
+
+Use the live audio API path when the interaction should feel conversational and immediate. This is the best starting point for voice agents that need barge-in, low first-audio latency, natural turn taking, and realtime tool use.
+
+The usual browser flow is:
+
+1. Your application server creates an ephemeral client secret for the live audio session.
+2. Your frontend creates a `RealtimeSession`.
+3. The session connects over WebRTC in the browser or WebSocket on the server.
+4. The agent handles audio turns, tools, interruptions, and handoffs inside that session.
+
+<CodeSample
+  client:load
+  title="Start a realtime voice session"
+  defaultLanguage="typescript"
+  code={examples.voiceRealtimeSession}
+/>
+
+From there, attach tools, handoffs, and guardrails to the `RealtimeAgent` the same way you would attach them to a text agent. Keep audio transport concerns in the session layer, and keep business logic in the agent definition.
+
+Start with the transport docs when you need lower-level control:
+
+- [Realtime and audio overview](https://developers.openai.com/api/docs/guides/realtime)
+- [Live audio API with WebRTC](https://developers.openai.com/api/docs/guides/realtime-webrtc)
+- [Live audio API with WebSocket](https://developers.openai.com/api/docs/guides/realtime-websocket)
+
+### Resources
+- [Realtime & Twilio starter app](https://github.com/openai/openai-realtime-twilio-demo) - Starter app integrating realtime agents with Twilio.
+
+## Connect support tools and human handoff
+
+Add tools one at a time: search help articles, look up a placeholder order, create a ticket, then escalate. Keep tool schemas small and predictable, return concise results to the model, and log a structured handoff summary for the human support queue. Use the support-agent demo as a reference for combining agent responses with a human-in-the-loop workflow.
+
+### Resources
+- [Support agent demo](https://github.com/openai/openai-support-agent-demo) - Demo showing a customer support agent with a human in the loop.
+- [ChatKit advanced samples](https://github.com/openai/openai-chatkit-advanced-samples) - Advanced samples showcasing the capabilities of ChatKit (part of AgentKit).
+
+## Capture transcripts and improve quality
+
+For customer support, transcripts are useful for QA, ticket summaries, and follow-up. Run transcription alongside the realtime session so you can store user turns separately from spoken model audio, then review failed calls to tune prompts, escalation rules, and audio handling for noisy environments.
+
+### Guide extract
+
+#### 3. Tune for the Messy Environment
+
+[Read full section](https://developers.openai.com/blog/realtime-perplexity-computer#3-tune-for-the-messy-environment)
+
+## 3. Tune for the Messy Environment
+
+It is important to tune VAD in the environment users live in. That means calibrating against real microphones, speaker volume, and background noise. One of our internal test cases was a noisy San Francisco bar because that felt like a real product moment. Someone says, “did you try the new Perplexity app?”. Their friend pulls out their phone and if voice fails we’ve just lost two users. When it works, the reaction is closer to “holy s\*\*t”. That was a useful forcing function for us. What works in clean conditions often breaks in the real world. It is better to tune for the messy environment first.
+
+One of the hardest parts of voice UX was getting pauses right. People naturally stop to think, pull something up on screen, or get ready to read something aloud. The model can easily treat that pause as the end of the turn and jump in too early. We saw this in cases like someone asking for help with a maths derivation. They’d pause to find the formula only for the model to jump in before they finished their question. That is what led us to voice lock. Rather than using a traditional push-to-talk approach where voice is off by default and the user has to press to speak, we invert it. The interaction stays ambient by default, but when the user wants to hold the floor for a moment they can lock the voice and take ownership of the turn. We also see this as more than a one-off feature. As voice interfaces move into more complicated workflows, we believe some version of this interaction pattern will become standard.
+
+### Resources
+- [Transcribing User Audio with a Separate Realtime Request](https://developers.openai.com/cookbook/examples/realtime_out_of_band_transcription) - Cookbook to transcribe user audio using out-of-band Realtime sessions.
+- [How Perplexity Brought Voice Search to Millions Using the Realtime API](https://developers.openai.com/blog/realtime-perplexity-computer) - Lessons from how Perplexity Computer's voice agent was built with the Realtime API.
